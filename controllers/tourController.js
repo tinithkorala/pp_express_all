@@ -1,3 +1,4 @@
+const sequelize = require("../config/postgres");
 const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
 
@@ -15,39 +16,62 @@ exports.getAllTours = async (req, res, next) => {
 
 exports.createTour = async (req, res, next) => {
   const tourData = req.body;
-  // const newTour = "hello";
-  const newTour = await Tour.create({
-    name: tourData.name,
-    slug: tourData.slug,
-    duration: tourData.duration,
-    maxGroupSize: tourData.maxGroupSize,
-    difficulty: tourData.difficulty,
-    ratingsAverage: tourData.ratingsAverage,
-    ratingsQuantity: tourData.ratingsQuantity,
-    price: tourData.price,
-    priceDiscount: tourData.priceDiscount,
-    summary: tourData.summary,
-    description: tourData.description,
-    imageCover: tourData.imageCover,
-    images: tourData.images,
-    startDates: tourData.startDates,
-    secretTour: tourData.secretTour,
-  });
-  if (tourData.startDates) {
-    tourData.startDates.map((startDate) => {
-      TourStart.create({
-        tour_id: newTour.id,
-        start_date: startDate,
+
+  const transaction = await sequelize.transaction();
+
+  try {
+    const newTour = await Tour.create(
+      {
+        name: tourData.name,
+        slug: tourData.slug,
+        duration: tourData.duration,
+        maxGroupSize: tourData.maxGroupSize,
+        difficulty: tourData.difficulty,
+        ratingsAverage: tourData.ratingsAverage,
+        ratingsQuantity: tourData.ratingsQuantity,
+        price: tourData.price,
+        priceDiscount: tourData.priceDiscount,
+        summary: tourData.summary,
+        description: tourData.description,
+        imageCover: tourData.imageCover,
+        images: tourData.images,
+        startDates: tourData.startDates,
+        secretTour: tourData.secretTour,
+      },
+      { transaction }
+    );
+    if (tourData.startDates) {
+      const startDatePromises = tourData.startDates.map((startDate) => {
+        return TourStart.create(
+          {
+            tour_id: newTour.id,
+            start_date: startDate,
+          },
+          { transaction }
+        );
       });
+  
+      await Promise.all(startDatePromises);
+    }
+    await transaction.commit();
+    res.status(200).json({
+      status: "success",
+      message: "createTour",
+      data: {
+        tour: newTour,
+      },
     });
+  } catch (error) {
+    await transaction.rollback();
+    res.status(500).json({
+      status: "fail",
+      message: "Failed to create tour",
+      error: error.message,
+    });
+    console.log(error);
   }
-  res.status(200).json({
-    status: "success",
-    message: "createTour",
-    data: {
-      tour: newTour,
-    },
-  });
+
+ 
 };
 
 exports.getTour = async (req, res, next) => {
