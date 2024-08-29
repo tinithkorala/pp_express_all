@@ -1,0 +1,252 @@
+[
+  {
+      "name": "Sigiriya Rock Fortress Tour",
+      "slug": "sigiriya-rock-fortress-tour",
+      "duration": 2,
+      "maxGroupSize": 20,
+      "difficulty": "medium",
+      "ratingsAverage": 4.8,
+      "ratingsQuantity": 50,
+      "price": 150.00,
+      "priceDiscount": 130.00,
+      "summary": "Explore the ancient Sigiriya Rock Fortress in Sri Lanka.",
+      "description": "Join our expert guides on a two-day adventure to the majestic Sigiriya Rock Fortress. This tour includes a visit to the stunning ancient city and breathtaking views from the top of the rock.",
+      "imageCover": "sigiriya-cover.jpg",
+      "images": [
+          "sigiriya1.jpg",
+          "sigiriya2.jpg",
+          "sigiriya3.jpg"
+      ],
+      "startDates": [
+          "2024-09-01T00:00:00.000Z",
+          "2024-10-15T00:00:00.000Z",
+          "2024-12-01T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Kandy Heritage Tour",
+      "slug": "kandy-heritage-tour",
+      "duration": 3,
+      "maxGroupSize": 15,
+      "difficulty": "easy",
+      "ratingsAverage": 4.2,
+      "ratingsQuantity": 30,
+      "price": 100.00,
+      "priceDiscount": 90.00,
+      "summary": "Discover the cultural heritage of Kandy, Sri Lanka's hill capital.",
+      "description": "This three-day tour takes you through the cultural landmarks of Kandy, including the Temple of the Tooth, Royal Botanical Gardens, and a scenic hike to Knuckles Mountain Range.",
+      "imageCover": "kandy-cover.jpg",
+      "images": [
+          "kandy1.jpg",
+          "kandy2.jpg",
+          "kandy3.jpg"
+      ],
+      "startDates": [
+          "2024-09-10T00:00:00.000Z",
+          "2024-10-20T00:00:00.000Z",
+          "2024-12-10T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Galle Fort and Beaches Tour",
+      "slug": "galle-fort-beaches-tour",
+      "duration": 2,
+      "maxGroupSize": 12,
+      "difficulty": "easy",
+      "ratingsAverage": 3.8,
+      "ratingsQuantity": 25,
+      "price": 75.00,
+      "priceDiscount": 60.00,
+      "summary": "Relax and explore the historic Galle Fort and stunning beaches.",
+      "description": "This two-day tour combines history and relaxation with visits to Galle Fort, Unawatuna Beach, and a boat safari on the Madu River.",
+      "imageCover": "galle-cover.jpg",
+      "images": [
+          "galle1.jpg",
+          "galle2.jpg",
+          "galle3.jpg"
+      ],
+      "startDates": [
+          "2024-09-15T00:00:00.000Z",
+          "2024-11-01T00:00:00.000Z",
+          "2024-12-20T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Ella Adventure Tour",
+      "slug": "ella-adventure-tour",
+      "duration": 4,
+      "maxGroupSize": 10,
+      "difficulty": "hard",
+      "ratingsAverage": 3.5,
+      "ratingsQuantity": 20,
+      "price": 50.00,
+      "priceDiscount": 40.00,
+      "summary": "Embark on an adventurous journey in Ella.",
+      "description": "This four-day tour includes trekking in Ella, exploring the Nine Arches Bridge, Little Adam's Peak, and a visit to the Ravana Falls.",
+      "imageCover": "ella-cover.jpg",
+      "images": [
+          "ella1.jpg",
+          "ella2.jpg",
+          "ella3.jpg"
+      ],
+      "startDates": [
+          "2024-09-05T00:00:00.000Z",
+          "2024-10-25T00:00:00.000Z",
+          "2024-12-05T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Colombo City and Nightlife Tour",
+      "slug": "colombo-city-nightlife-tour",
+      "duration": 1,
+      "maxGroupSize": 25,
+      "difficulty": "easy",
+      "ratingsAverage": 4.0,
+      "ratingsQuantity": 40,
+      "price": 40.00,
+      "priceDiscount": 30.00,
+      "summary": "Experience the vibrant city life and nightlife of Colombo.",
+      "description": "A one-day tour of Colombo that includes a city tour, a visit to Gangaramaya Temple, shopping at Pettah Market, and an evening at the popular nightlife spots.",
+      "imageCover": "colombo-cover.jpg",
+      "images": [
+          "colombo1.jpg",
+          "colombo2.jpg",
+          "colombo3.jpg"
+      ],
+      "startDates": [
+          "2024-09-20T00:00:00.000Z",
+          "2024-11-15T00:00:00.000Z",
+          "2024-12-25T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Anuradhapura Ancient Ruins Tour",
+      "slug": "anuradhapura-ancient-ruins-tour",
+      "duration": 2,
+      "maxGroupSize": 18,
+      "difficulty": "medium",
+      "ratingsAverage": 4.5,
+      "ratingsQuantity": 35,
+      "price": 120.00,
+      "priceDiscount": 110.00,
+      "summary": "Explore the ancient ruins of Anuradhapura, one of Sri Lanka's oldest cities.",
+      "description": "This two-day tour includes guided visits to the sacred city of Anuradhapura, Mihintale, and the ancient temples and stupas that mark this historic site.",
+      "imageCover": "anuradhapura-cover.jpg",
+      "images": [
+          "anuradhapura1.jpg",
+          "anuradhapura2.jpg",
+          "anuradhapura3.jpg"
+      ],
+      "startDates": [
+          "2024-09-08T00:00:00.000Z",
+          "2024-10-18T00:00:00.000Z",
+          "2024-12-08T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Nuwara Eliya Tea and Waterfalls Tour",
+      "slug": "nuwara-eliya-tea-waterfalls-tour",
+      "duration": 3,
+      "maxGroupSize": 16,
+      "difficulty": "medium",
+      "ratingsAverage": 4.1,
+      "ratingsQuantity": 28,
+      "price": 80.00,
+      "priceDiscount": 70.00,
+      "summary": "Discover the lush tea plantations and stunning waterfalls of Nuwara Eliya.",
+      "description": "This three-day tour covers visits to tea plantations, Horton Plains National Park, and the famous waterfalls of Nuwara Eliya, known as Little England.",
+      "imageCover": "nuwara-eliya-cover.jpg",
+      "images": [
+          "nuwara-eliya1.jpg",
+          "nuwara-eliya2.jpg",
+          "nuwara-eliya3.jpg"
+      ],
+      "startDates": [
+          "2024-09-12T00:00:00.000Z",
+          "2024-11-05T00:00:00.000Z",
+          "2024-12-15T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Yala National Park Safari",
+      "slug": "yala-national-park-safari",
+      "duration": 2,
+      "maxGroupSize": 20,
+      "difficulty": "medium",
+      "ratingsAverage": 4.3,
+      "ratingsQuantity": 33,
+      "price": 90.00,
+      "priceDiscount": 75.00,
+      "summary": "Experience the wildlife of Yala National Park on this thrilling safari.",
+      "description": "This two-day safari tour takes you deep into Yala National Park, home to elephants, leopards, and a wide variety of birds and other wildlife.",
+      "imageCover": "yala-cover.jpg",
+      "images": [
+          "yala1.jpg",
+          "yala2.jpg",
+          "yala3.jpg"
+      ],
+      "startDates": [
+          "2024-09-18T00:00:00.000Z",
+          "2024-10-28T00:00:00.000Z",
+          "2024-12-18T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Trincomalee Beaches and Marine Life Tour",
+      "slug": "trincomalee-beaches-marine-life-tour",
+      "duration": 3,
+      "maxGroupSize": 14,
+      "difficulty": "easy",
+      "ratingsAverage": 3.9,
+      "ratingsQuantity": 22,
+      "price": 65.00,
+      "priceDiscount": 50.00,
+      "summary": "Relax on the beautiful beaches of Trincomalee and explore the rich marine life.",
+      "description": "This three-day tour includes beach time at Nilaveli and Uppuveli, and a visit to Pigeon Island National Park for snorkeling and marine exploration.",
+      "imageCover": "trincomalee-cover.jpg",
+      "images": [
+          "trincomalee1.jpg",
+          "trincomalee2.jpg",
+          "trincomalee3.jpg"
+      ],
+      "startDates": [
+          "2024-09-25T00:00:00.000Z",
+          "2024-11-10T00:00:00.000Z",
+          "2024-12-30T00:00:00.000Z"
+      ],
+      "secretTour": false
+  },
+  {
+      "name": "Polonnaruwa Kingdom Tour",
+      "slug": "polonnaruwa-kingdom-tour",
+      "duration": 2,
+      "maxGroupSize": 18,
+      "difficulty": "medium",
+      "ratingsAverage": 4.4,
+      "ratingsQuantity": 38,
+      "price": 110.00,
+      "priceDiscount": 100.00,
+      "summary": "Step back in time to explore the ancient kingdom of Polonnaruwa.",
+      "description": "This two-day tour includes guided visits to the ancient ruins of Polonnaruwa, Gal Viharaya, and a cycling tour around the old city.",
+      "imageCover": "polonnaruwa-cover.jpg",
+      "images": [
+          "polonnaruwa1.jpg",
+          "polonnaruwa2.jpg",
+          "polonnaruwa3.jpg"
+      ],
+      "startDates": [
+          "2024-09-02T00:00:00.000Z",
+          "2024-10-12T00:00:00.000Z",
+          "2024-11-25T00:00:00.000Z"
+      ],
+      "secretTour": false
+  }
+]
