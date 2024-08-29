@@ -99,7 +99,7 @@ const Tour = sequelize.define(
       allowNull: true,
     },
     startDates: {
-      type: DataTypes.ARRAY(DataTypes.DATE),
+      type: DataTypes.ARRAY(DataTypes.DATE()),
       allowNull: true,
     },
     secretTour: {
@@ -111,3 +111,4 @@ const Tour = sequelize.define(
 );
 
 module.exports = Tour;
+

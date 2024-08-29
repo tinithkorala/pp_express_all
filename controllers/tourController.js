@@ -1,4 +1,5 @@
 const Tour = require("../models/tourModel");
+const TourStart = require("../models/tourStartModel");
 
 exports.getAllTours = async (req, res, next) => {
   const tours = await Tour.findAll();
@@ -14,6 +15,7 @@ exports.getAllTours = async (req, res, next) => {
 
 exports.createTour = async (req, res, next) => {
   const tourData = req.body;
+  // const newTour = "hello";
   const newTour = await Tour.create({
     name: tourData.name,
     slug: tourData.slug,
@@ -31,6 +33,14 @@ exports.createTour = async (req, res, next) => {
     startDates: tourData.startDates,
     secretTour: tourData.secretTour,
   });
+  if (tourData.startDates) {
+    tourData.startDates.map((startDate) => {
+      TourStart.create({
+        tour_id: newTour.id,
+        start_date: startDate,
+      });
+    });
+  }
   res.status(200).json({
     status: "success",
     message: "createTour",
