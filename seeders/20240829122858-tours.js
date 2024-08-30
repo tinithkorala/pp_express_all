@@ -34,7 +34,7 @@ module.exports = {
 
       // Create the associated TourStart records
       const tourStarts = tour.startDates.map((date) => ({
-        date: new Date(date),
+        start_date: new Date(date),
         tour_id: createdTour.id,
         createdAt: new Date(),
         updatedAt: new Date(),

@@ -3,7 +3,15 @@ const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
 
 exports.getAllTours = async (req, res, next) => {
-  const tours = await Tour.findAll();
+  const tours = await Tour.findAll({
+    include: [
+      {
+        model: TourStart,
+        as: "tourStarts",
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
+    ],
+  });
   res.status(200).json({
     status: "success",
     message: "getAllTours",
@@ -50,7 +58,7 @@ exports.createTour = async (req, res, next) => {
           { transaction }
         );
       });
-  
+
       await Promise.all(startDatePromises);
     }
     await transaction.commit();
@@ -70,8 +78,6 @@ exports.createTour = async (req, res, next) => {
     });
     console.log(error);
   }
-
- 
 };
 
 exports.getTour = async (req, res, next) => {
