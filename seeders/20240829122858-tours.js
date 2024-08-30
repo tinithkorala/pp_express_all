@@ -1,36 +1,51 @@
 "use strict";
 
+const fs = require("fs");
+const path = require("path");
+const TourStart = require("../models/tourStartModel");
+const Tour = require("../models/tourModel");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(
-      "Tours",
-      [
-        {
-          name: "Sigiriya Rock Fortress Tour",
-          slug: "sigiriya-rock-fortress-tour",
-          duration: 2,
-          maxGroupSize: 20,
-          difficulty: "medium",
-          ratingsAverage: 4.8,
-          ratingsQuantity: 50,
-          price: 150.0,
-          priceDiscount: 130.0,
-          summary: "Explore the ancient Sigiriya Rock Fortress in Sri Lanka.",
-          description:
-            "Join our expert guides on a two-day adventure to the majestic Sigiriya Rock Fortress. This tour includes a visit to the stunning ancient city and breathtaking views from the top of the rock.",
-          imageCover: "sigiriya-cover.jpg",
-          images: ["sigiriya1.jpg", "sigiriya2.jpg", "sigiriya3.jpg"],
-          secretTour: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
+    // Read data from json
+    const tourData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../data/Tours.json"), "utf-8")
     );
+    for (const tour of tourData) {
+      const createdTour = await Tour.create({
+        name: tour.name,
+        slug: tour.slug,
+        duration: tour.duration,
+        maxGroupSize: tour.maxGroupSize,
+        difficulty: tour.difficulty,
+        ratingsAverage: tour.ratingsAverage,
+        ratingsQuantity: tour.ratingsQuantity,
+        price: tour.price,
+        priceDiscount: tour.priceDiscount,
+        summary: tour.summary,
+        description: tour.description,
+        imageCover: tour.imageCover,
+        images: tour.images,
+        secretTour: tour.secretTour,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      // Create the associated TourStart records
+      const tourStarts = tour.startDates.map((date) => ({
+        date: new Date(date),
+        tour_id: createdTour.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+
+      await TourStart.bulkCreate(tourStarts);
+    }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Tours", null, {});
+    await TourStart.destroy({ where: {} });
+    await Tour.destroy({ where: {} });
   },
 };
