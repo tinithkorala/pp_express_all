@@ -1,12 +1,8 @@
 require("dotenv").config();
 
 const app = require("./app");
-const sequelize = require("./config/postgres");
+const { sequelize } = require("./models/associations");
 const colorLogger = require("./utils/colorLogger");
-
-// Models
-const tourModel = require("./models/tourModel");
-const tourStartModel = require("./models/tourStartModel");
 
 const port = process.env.PORT || 3000;
 

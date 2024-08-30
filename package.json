@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "prod": "NODE_ENV=production nodemon server.js"
+    "prod": "NODE_ENV=production nodemon server.js",
+    "seed": "npx sequelize-cli db:seed:all",
+    "rollback": "npx sequelize-cli db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",
