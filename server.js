@@ -26,7 +26,7 @@ sequelize
 
     // Server Listen
     app.listen(port, () => {
-      colorLogger("Server is running on port ${port}", "success");
+      colorLogger(`Server is running on port ${port}`, "success");
     });
   })
   .catch((error) =>
