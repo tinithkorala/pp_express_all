@@ -7,6 +7,7 @@ router.param("id", (req, res, next, val) => {
   console.log(`Tour id is : ${val}`);
   next();
 });
+router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours)
 
 router
   .route("/")
