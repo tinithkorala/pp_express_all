@@ -149,3 +149,34 @@ exports.deleteTour = async (req, res, next) => {
     message: "deleteTour",
   });
 };
+
+exports.getTourStats = async (req, res, next) => {
+  try {
+    const stats = await Tour.findAll({
+      attributes: [
+        [sequelize.fn('COUNT', sequelize.col('id')),  'tour_count'],
+        [sequelize.fn('AVG', sequelize.col('ratingsQuantity')), 'ratings_quantity'],
+        [sequelize.fn('AVG', sequelize.col('ratingsAverage')), 'ratings_average'],
+        [sequelize.fn('AVG', sequelize.col('price')), 'avg_price'],
+        [sequelize.fn('MIN', sequelize.col('price')), 'min_price'],
+        [sequelize.fn('MAX', sequelize.col('price')), 'max_price']
+      ],
+      group: ['difficulty'],
+      order: [[sequelize.col('avg_price')]],
+      raw: true,
+    })
+    res.status(200).json({
+      status: "success",
+      message: "stats",
+      data: {
+        stats
+      }
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "error",
+      message: error.message,
+    });
+    console.log(error);
+  }
+}

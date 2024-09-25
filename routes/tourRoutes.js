@@ -8,6 +8,7 @@ router.param("id", (req, res, next, val) => {
   next();
 });
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours)
+router.route('/tour-stats').get(tourController.getTourStats);
 
 router
   .route("/")
