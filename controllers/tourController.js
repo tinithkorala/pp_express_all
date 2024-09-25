@@ -1,8 +1,7 @@
-const { Op } = require("sequelize");
-
 const sequelize = require("../config/postgres");
 const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
+const APIQueryBuilder = require("../utils/APIQueryBuilder");
 
 exports.aliasTopTours = (req, res, next) => {
   // limit=5&sort=-ratingsAverage,price
@@ -14,53 +13,14 @@ exports.aliasTopTours = (req, res, next) => {
 
 exports.getAllTours = async (req, res, next) => {
   try {
-    // Filtering
-    const queryObj = { ...req.query };
-    console.log(queryObj);
+    const APIQueryBuilderObj = new APIQueryBuilder({}, req.query);
+    const queryBuilder = APIQueryBuilderObj.filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const { where, order, attributes, limit, offset, page } = queryBuilder.query;
 
-    const excludedFields = ["page", "sort", "limit", "fields"];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    // Advanced Filtering - Handle different operators
-    const operatorsMap = {
-      gt: Op.gt,
-      gte: Op.gte,
-      lt: Op.lt,
-      lte: Op.lte,
-      ne: Op.ne,
-    };
-    Object.keys(queryObj).forEach((key) => {
-      if (typeof queryObj[key] === "object") {
-        Object.keys(queryObj[key]).forEach((opKey) => {
-          if (operatorsMap[opKey]) {
-            queryObj[key] = { [operatorsMap[opKey]]: queryObj[key][opKey] };
-          }
-        });
-      }
-    });
-
-    // Sorting
-    const sortBy = req.query.sort;
-    let order = [];
-
-    if (sortBy) {
-      const sortFields = sortBy.split(",");
-      order = sortFields.map((field) => {
-        if (field.startsWith("-")) {
-          return [field.slice(1), "DESC"];
-        }
-        return [field, "ASC"];
-      });
-    }
-
-    // Field Limiting
-    const fields = req.query.fields;
-    const selectedFields = fields ? fields.split(",") : null;
-
-    // Pagination
-    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
-    const page = req.query.page ? parseInt(req.query.page) : 1;
-    const offset = (page - 1) * limit;
+    console.log(queryBuilder);
 
     const tours = await Tour.findAll({
       include: [
@@ -70,14 +30,14 @@ exports.getAllTours = async (req, res, next) => {
           attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
-      where: queryObj,
-      order: order,
-      attributes: selectedFields,
-      limit: limit,
-      offset: offset,
+      where,
+      order,
+      attributes,
+      limit,
+      offset,
     });
 
-    const totalTours = await Tour.count({ where: queryObj });
+    const totalTours = await Tour.count({ where });
 
     res.status(200).json({
       status: "success",
