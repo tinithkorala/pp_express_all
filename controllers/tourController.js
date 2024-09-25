@@ -1,8 +1,58 @@
+const { Op } = require("sequelize");
+
 const sequelize = require("../config/postgres");
 const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
 
 exports.getAllTours = async (req, res, next) => {
+  // Filtering
+  const queryObj = { ...req.query };
+  console.log(queryObj);
+
+  const excludedFields = ["page", "sort", "limit", "fields"];
+  excludedFields.forEach((el) => delete queryObj[el]);
+
+  // Advanced Filtering - Handle different operators
+  const operatorsMap = {
+    gt: Op.gt,
+    gte: Op.gte,
+    lt: Op.lt,
+    lte: Op.lte,
+    ne: Op.ne,
+  };
+  Object.keys(queryObj).forEach((key) => {
+    if (typeof queryObj[key] === "object") {
+      Object.keys(queryObj[key]).forEach((opKey) => {
+        if (operatorsMap[opKey]) {
+          queryObj[key] = { [operatorsMap[opKey]]: queryObj[key][opKey] };
+        }
+      });
+    }
+  });
+
+  // Sorting
+  const sortBy = req.query.sort;
+  let order = [];
+
+  if (sortBy) {
+    const sortFields = sortBy.split(",");
+    order = sortFields.map((field) => {
+      if (field.startsWith("-")) {
+        return [field.slice(1), "DESC"];
+      }
+      return [field, "ASC"];
+    });
+  }
+
+  // Field Limiting
+  const fields = req.query.fields;
+  const selectedFields = fields ? fields.split(",") : null;
+
+  // Pagination
+  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const offset = (page - 1) * limit;
+
   const tours = await Tour.findAll({
     include: [
       {
@@ -11,11 +61,22 @@ exports.getAllTours = async (req, res, next) => {
         attributes: { exclude: ["createdAt", "updatedAt"] },
       },
     ],
+    where: queryObj,
+    order: order,
+    attributes: selectedFields,
+    limit: limit,
+    offset: offset,
   });
+
+  const totalTours = await Tour.count({ where: queryObj });
+
   res.status(200).json({
     status: "success",
     message: "getAllTours",
     results: tours.length,
+    totalResults: totalTours,
+    totalPages: Math.ceil(totalTours / limit),
+    currentPage: page,
     data: {
       tours,
     },
