@@ -1,42 +1,18 @@
 const express = require("express");
-const morgan = require("morgan");
-const logger = require("./utils/logger");
+
+const loggerMorganMiddleware = require("./middleware/loggerMorganMiddleware");
 
 // Routers
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
+const logger = require("./utils/logger");
 
 const app = express();
 
 // Middleware Stack
 app.use(express.json());
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
-const morganFormat = ":method :url :status :response-time ms";
-
-app.use(
-  morgan(morganFormat, {
-    stream: {
-      write: (message) => {
-        console.log(message);
-        const logObject = {
-          method: message.split(" ")[0],
-          url: message.split(" ")[1],
-          status: message.split(" ")[2],
-          responseTime: message.split(" ")[3],
-        };
-        logger.info(JSON.stringify(logObject));
-      },
-    },
-  })
-);
-
-app.use((req, res, next) => {
-  next();
-});
+app.use(loggerMorganMiddleware);
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -45,10 +21,20 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/error", (req, res) => {
+  try {
+    throw new Error('This is test error');
+  } catch (error) {
+    logger.error({message: error.message, stack: error.stack})
+  }
+  res.status(404).json({
+    status: "fail",
+    message: "fail ok !",
+  });
+});
+
 // Mounting Routers
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
-
-
 
 module.exports = app;
