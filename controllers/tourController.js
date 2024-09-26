@@ -3,6 +3,8 @@ const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
 const APIQueryBuilder = require("../utils/APIQueryBuilder");
 
+const { fn, col, literal } = require('sequelize');
+
 exports.aliasTopTours = (req, res, next) => {
   // limit=5&sort=-ratingsAverage,price
   req.query.limit = "5";
@@ -18,7 +20,8 @@ exports.getAllTours = async (req, res, next) => {
       .sort()
       .limitFields()
       .paginate();
-    const { where, order, attributes, limit, offset, page } = queryBuilder.query;
+    const { where, order, attributes, limit, offset, page } =
+      queryBuilder.query;
 
     console.log(queryBuilder);
 
@@ -154,23 +157,29 @@ exports.getTourStats = async (req, res, next) => {
   try {
     const stats = await Tour.findAll({
       attributes: [
-        [sequelize.fn('COUNT', sequelize.col('id')),  'tour_count'],
-        [sequelize.fn('AVG', sequelize.col('ratingsQuantity')), 'ratings_quantity'],
-        [sequelize.fn('AVG', sequelize.col('ratingsAverage')), 'ratings_average'],
-        [sequelize.fn('AVG', sequelize.col('price')), 'avg_price'],
-        [sequelize.fn('MIN', sequelize.col('price')), 'min_price'],
-        [sequelize.fn('MAX', sequelize.col('price')), 'max_price']
+        [sequelize.fn("COUNT", sequelize.col("id")), "tour_count"],
+        [
+          sequelize.fn("AVG", sequelize.col("ratingsQuantity")),
+          "ratings_quantity",
+        ],
+        [
+          sequelize.fn("AVG", sequelize.col("ratingsAverage")),
+          "ratings_average",
+        ],
+        [sequelize.fn("AVG", sequelize.col("price")), "avg_price"],
+        [sequelize.fn("MIN", sequelize.col("price")), "min_price"],
+        [sequelize.fn("MAX", sequelize.col("price")), "max_price"],
       ],
-      group: ['difficulty'],
-      order: [[sequelize.col('avg_price')]],
+      group: ["difficulty"],
+      order: [[sequelize.col("avg_price")]],
       raw: true,
-    })
+    });
     res.status(200).json({
       status: "success",
       message: "stats",
       data: {
-        stats
-      }
+        stats,
+      },
     });
   } catch (error) {
     res.status(404).json({
@@ -179,4 +188,65 @@ exports.getTourStats = async (req, res, next) => {
     });
     console.log(error);
   }
-}
+};
+
+exports.getMonthlyPlan = async (req, res, next) => {
+  try {
+    const year = req.params.year;
+    // const plan = await Tour.findAll({
+    //   include: [
+    //     {
+    //       model: TourStart,
+    //       as: "tourStarts",
+    //       attributes: { exclude: ["createdAt", "updatedAt"] },
+    //     },
+    //   ],
+    // });
+    // const plan = await TourStart.findAll({
+    //   attributes: {
+    //     exclude: ['createdAt', 'updatedAt']
+    //   },
+    //   include: [
+    //     {
+    //       model: Tour,
+    //       as: 'tours',
+    //       attributes: ['id', 'name', 'price']
+    //     }
+    //   ]
+    // });
+    const plan = await TourStart.findAll({
+      attributes: [
+        [fn('DATE_TRUNC', 'month', col('TourStart.start_date')), 'month'], // Group by month from TourStart
+        [fn('COUNT', col('TourStart.id')), 'tourStartCount'], // Count of TourStart records per month
+      ],
+      include: [
+        {
+          model: Tour,
+          as: 'tours',
+          attributes: [
+            ['id', 'tourId'], // Alias to avoid ambiguity
+            'name',
+            'price'
+          ]
+        }
+      ],
+      group: [literal('month'), col('tours.id')], // Explicitly use 'tours.id' for grouping
+      order: [[literal('month'), 'ASC']], // Order by month
+    });
+    
+    res.status(200).json({
+      status: "success",
+      message: "plan",
+      results: plan.length,
+      data: {
+        plan,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "error",
+      message: error.message,
+    });
+    console.log(error);
+  }
+};
