@@ -106,6 +106,16 @@ const Tour = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    // Virtuals
+    durationWeeks: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.duration / 7;
+      },
+      set() {
+        throw new Error('Do not try to set the `durationWeeks` value!')
+      }
+    }
   },
   { timestamps: true }
 );
