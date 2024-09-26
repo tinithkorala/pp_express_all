@@ -21,7 +21,6 @@ const Tour = sequelize.define(
     },
     slug: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     duration: {
       type: DataTypes.INTEGER,
