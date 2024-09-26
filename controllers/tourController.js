@@ -3,7 +3,7 @@ const Tour = require("../models/tourModel");
 const TourStart = require("../models/tourStartModel");
 const APIQueryBuilder = require("../utils/APIQueryBuilder");
 
-const { fn, col, literal } = require('sequelize');
+const { fn, col, literal } = require("sequelize");
 
 exports.aliasTopTours = (req, res, next) => {
   // limit=5&sort=-ratingsAverage,price
@@ -130,15 +130,27 @@ exports.getTour = async (req, res, next) => {
 exports.updateTour = async (req, res, next) => {
   const { id } = req.params;
   const updatedTourdata = req.body;
-  const [updatedRecordCount, updatedRecords] = await Tour.update(
-    { price: updatedTourdata.price },
-    { where: { id: id }, returning: true }
-  );
+
+  console.log(updatedTourdata.price);
+
+  const tour = await Tour.findByPk(id);
+
+  if (updatedTourdata.version !== tour.version) {
+    return res.status(200).json({
+      status: "fail",
+      message: "Version is mismatch",
+    });
+  }
+
+  tour.price = updatedTourdata.price; 
+  tour.version += 1;
+  await tour.save();
+
   res.status(200).json({
     status: "success",
     message: "updateTour",
     data: {
-      tour: updatedRecords,
+      tour: tour,
     },
   });
 };
@@ -194,24 +206,24 @@ exports.getMonthlyPlan = async (req, res, next) => {
     const year = req.params.year;
     const plan = await TourStart.findAll({
       attributes: [
-        [fn('DATE_TRUNC', 'month', col('TourStart.start_date')), 'month'], // Group by month from TourStart
-        [fn('COUNT', col('TourStart.id')), 'tourStartCount'], // Count of TourStart records per month
+        [fn("DATE_TRUNC", "month", col("TourStart.start_date")), "month"], // Group by month from TourStart
+        [fn("COUNT", col("TourStart.id")), "tourStartCount"], // Count of TourStart records per month
       ],
       include: [
         {
           model: Tour,
-          as: 'tours',
+          as: "tours",
           attributes: [
-            ['id', 'tourId'], // Alias to avoid ambiguity
-            'name',
-            'price'
-          ]
-        }
+            ["id", "tourId"], // Alias to avoid ambiguity
+            "name",
+            "price",
+          ],
+        },
       ],
-      group: [literal('month'), col('tours.id')], // Explicitly use 'tours.id' for grouping
-      order: [[literal('month'), 'ASC']], // Order by month
+      group: [literal("month"), col("tours.id")], // Explicitly use 'tours.id' for grouping
+      order: [[literal("month"), "ASC"]], // Order by month
     });
-    
+
     res.status(200).json({
       status: "success",
       message: "plan",

@@ -107,6 +107,10 @@ const Tour = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    version: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     // Virtuals
     durationWeeks: {
       type: DataTypes.VIRTUAL,
@@ -121,7 +125,7 @@ const Tour = sequelize.define(
   {
     timestamps: true,
     hooks: {
-      beforeValidate: (tour, options) => {
+      beforeCreate: (tour, options) => {
         if (tour.name) {
           tour.slug = slugify(tour.name, {
             replacement: "-",
