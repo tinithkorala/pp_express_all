@@ -1,5 +1,6 @@
 const { DataTypes, DATEONLY } = require("sequelize");
 const sequelize = require("./../config/postgres");
+const slugify = require("slugify");
 
 const Tour = sequelize.define(
   "Tour",
@@ -113,12 +114,25 @@ const Tour = sequelize.define(
         return this.duration / 7;
       },
       set() {
-        throw new Error('Do not try to set the `durationWeeks` value!')
-      }
-    }
+        throw new Error("Do not try to set the `durationWeeks` value!");
+      },
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    hooks: {
+      beforeValidate: (tour, options) => {
+        if (tour.name) {
+          tour.slug = slugify(tour.name, {
+            replacement: "-",
+            lower: true,
+          });
+        } else {
+          throw new Error("Tour name is required to generate slug");
+        }
+      },
+    },
+  }
 );
 
 module.exports = Tour;
-

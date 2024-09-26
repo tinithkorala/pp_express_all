@@ -67,7 +67,6 @@ exports.createTour = async (req, res, next) => {
     const newTour = await Tour.create(
       {
         name: tourData.name,
-        slug: tourData.slug,
         duration: tourData.duration,
         maxGroupSize: tourData.maxGroupSize,
         difficulty: tourData.difficulty,
@@ -193,27 +192,6 @@ exports.getTourStats = async (req, res, next) => {
 exports.getMonthlyPlan = async (req, res, next) => {
   try {
     const year = req.params.year;
-    // const plan = await Tour.findAll({
-    //   include: [
-    //     {
-    //       model: TourStart,
-    //       as: "tourStarts",
-    //       attributes: { exclude: ["createdAt", "updatedAt"] },
-    //     },
-    //   ],
-    // });
-    // const plan = await TourStart.findAll({
-    //   attributes: {
-    //     exclude: ['createdAt', 'updatedAt']
-    //   },
-    //   include: [
-    //     {
-    //       model: Tour,
-    //       as: 'tours',
-    //       attributes: ['id', 'name', 'price']
-    //     }
-    //   ]
-    // });
     const plan = await TourStart.findAll({
       attributes: [
         [fn('DATE_TRUNC', 'month', col('TourStart.start_date')), 'month'], // Group by month from TourStart
